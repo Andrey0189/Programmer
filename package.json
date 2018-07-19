@@ -1,0 +1,17 @@
+{
+  "name": "programmer",
+  "version": "1.0.0",
+  "description": "",
+  "main": "bot.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "discord-eco": "0.0.10",
+    "discord.js": "^11.3.2",
+    "foreach-timeout": "^2.0.2",
+    "fs": "0.0.1-security"
+  }
+}
