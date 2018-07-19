@@ -66,13 +66,15 @@ client.on('guildMemberAdd', (member) => {
         .setDescription('**Приветствую тебя ' + member + ', я - бот этого сервера. У меня есть магазин, экономика, миниигры, большое количесто команд. А на нашем сервере ты сможешь найти хороших друзей, редкие пинги, возможность поделиться своим творчеством, и посмотреть как его оценят другие люди. В скором времени у нас выйдет много обновлений. С уважением ' + bot_name + ' ' + version)
         .setColor('af00ff')
         .setFooter(footer)
-    const embed = new Discord.RichEmbed()
+        .setTimestamp();
+        member.send({embed})
+    const embed2 = new Discord.RichEmbed()
         .setTitle('Пополнение!')
         .setColor('af00ff')
         .setDescription('На сервер пришел ' + member + '\n\nТеперь нас **' + member.guild.memberCount + '**')
         .setFooter(footer)
         .setTimestamp()
-        client.fetchUser('242975403512168449').then (user => user.send({embed}));
+        client.fetchUser('242975403512168449').then (user => user.send({embed: embed2}));
         client.channels.get('467307902252613652').send(member + ' Прилетел на сервер. Нас стало **' + member.guild.memberCount + '**');
 });
 //Событие ухода мембера с сервера
