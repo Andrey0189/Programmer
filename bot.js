@@ -123,9 +123,9 @@ client.on('message', message => { //Событие message
     }
     })
     });
-    if(message.content.indexOf(p) !== 0) return;
-    const vote = message.content.slice(p.length).trim().split(/;+/g);
-    const args = message.content.slice(p.length).trim().split(/ +/g);
+    if(message.content.indexOf(prefix) !== 0) return;
+    const vote = message.content.slice(prefix.length).trim().split(/;+/g);
+    const args = message.content.slice(prefix.length).trim().split(/ +/g);
     const command = args.shift().toLowerCase();
     function sendMsg (msg) {
         message.channel.send(msg)
