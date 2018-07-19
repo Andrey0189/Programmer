@@ -93,12 +93,12 @@ client.on('guildMemberRemove', (member) => {
 client.on('ready', () => {
     //Запуск цикла перемены игр
     setTimeout(game1, 1000);
-    console.log('Бот запущен успешно\n    Экономика работает...\n    Команды работают...\n    Количество гильдий на которых присутствует бот: ' + bot.guilds.size);
+    console.log('Бот запущен успешно\n    Экономика работает...\n    Команды работают...\n    Количество гильдий на которых присутствует бот: ' + client.guilds.size);
 });
 //Кулдаун
 let cooldown = new Set();
 let cdseconds = 5
-bot.on('message', message => { //Событие message
+client.on('message', message => { //Событие message
     if(message.channel.type !== 'text') return;
     if(message.channel.id === '469504020323631115') return;
     if (message.author.bot) return;
