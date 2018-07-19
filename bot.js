@@ -39,11 +39,11 @@ function declOfNum(number, titles) {
 }
 //Функции для перемены игр
 function game1() {
-    client.user.setActivity('на ' + p + 'help для справки',{ type: 'WATCHING' })
+    client.user.setActivity('на ' + prefix + 'help для справки',{ type: 'WATCHING' })
     setTimeout(game2, 16000);
 }
 function game2() {
-    client.user.setActivity('на ' + p + 'info для информации',{ type: 'WATCHING' })
+    client.user.setActivity('на ' + prefix + 'info для информации',{ type: 'WATCHING' })
     setTimeout(game1, 16000);
 }
 //Функция для добавления нескольких реакций под сообщение
