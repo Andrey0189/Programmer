@@ -441,7 +441,6 @@ client.on('message', message => { //Событие message
     function replMsg (msg) {
         message.reply(msg)
     }
-    let commands = ['rainbow', '8ball', 'ship', 'say', 'send', 'sms', 'poll', 'warn', 'mute | unmute', 'kick', 'ban', 'warn', 'clear', 'avatar', 'random'];
     if ('rainbow'.includes(command)) {
         message.channel.send('Готово :white_check_mark:');
         let colors = ["#ff0000", "#ffa500", "#ffff00", "#00ff00", "#00BFFF", "#0000FF", "#ff00ff"];
@@ -541,7 +540,7 @@ client.on('message', message => { //Событие message
                     if (i === 3) emoji = module.exports[i]
                     if (i === 4) emoji = module.exports[i]
                     if (i === 5) emoji = module.exports[i]
-                    msg.react(emoji);
+                    setTimeout(() => {msg.react(emoji);}, 1000);
                 }
             });
         } else message.channel.send(message.author + ', Ошибка. Причина: **Вы не можете использовать команду say, вы должны иметь право `Управлять сообщениями`**');
