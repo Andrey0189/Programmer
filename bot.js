@@ -118,6 +118,7 @@ client.on('message', message => {
     if(message.channel.id === '469504020323631115') return;
     const args = message.content.slice(prefix.length).trim().split(/ +/g);
     const command = args.shift().toLowerCase();
+    if(!userData[message.author.id + message.guild.id]) userData[message.author.id + message.guild.id] = {};
     if(!userData[message.author.id + message.guild.id].xp) userData[message.author.id + message.guild.id].xp = 0;
     if(!userData[message.author.id + message.guild.id].lvl) userData[message.author.id + message.guild.id].lvl = 0;
     if (message.content.startsWith(prefix)) return;
@@ -147,6 +148,7 @@ client.on('message', message => {
     if(message.channel.id === '469504020323631115') return;
     const args = message.content.slice(prefix.length).trim().split(/ +/g);
     const command = args.shift().toLowerCase();
+    if(!userData[message.author.id + message.guild.id]) userData[message.author.id + message.guild.id] = {};
     if(!userData[message.author.id + message.guild.id].xp) userData[message.author.id + message.guild.id].xp = 0;
     if(!userData[message.author.id + message.guild.id].lvl) userData[message.author.id + message.guild.id].lvl = 0;
     if(message.content.indexOf(prefix) !== 0) return;
