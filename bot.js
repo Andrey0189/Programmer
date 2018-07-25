@@ -43,15 +43,6 @@ function declOfNum(number, titles) {
     let cases = [2, 0, 1, 1, 1, 2];
     return titles[ (number%100>4 && number%100<20)? 2 : cases[(number%10<5)?number%10:5] ];
 }
-//Функции для перемены игр
-function game1() {
-    client.user.setActivity('на ' + prefix + 'help для справки',{ type: 'WATCHING' })
-    setTimeout(game2, 16000);
-}
-function game2() {
-    client.user.setActivity('на ' + prefix + 'info для информации',{ type: 'WATCHING' })
-    setTimeout(game1, 16000);
-}
 //Функция для добавления нескольких реакций под сообщение
 async function multipleReact(message, arr) {
     if (arr !== []) {
@@ -97,8 +88,7 @@ client.on('guildMemberRemove', (member) => {
 });
 //То что должно произойти после запуска бота
 client.on('ready', () => {
-    //Запуск цикла перемены игр
-    setTimeout(game1, 1000);
+    client.user.setActivity('на ' + prefix + 'help',{ type: 'WATCHING' })
     console.log('Бот запущен успешно\n    Экономика работает...\n    Команды работают...\n    Количество гильдий на которых присутствует бот: ' + client.guilds.size);
 });
 //Кулдаун
@@ -126,11 +116,13 @@ client.on('message', message => {
         for (let i = 0; i < xpForLvl.length; i++) {
         if (userData[message.author.id + message.guild.id].xp >= xpForLvl[i] && userData[message.author.id + message.guild.id].lvl === i) {
             userData[message.author.id + message.guild.id].lvl++
-            if (userData[message.author.id + message.guild.id].lvl === 2) {awardMsg = 'И получаете роль "IT Новичок" в качестве приза!'; message.guild.members.get(message.author.id).addRole(message.guild.roles.find("id", "468124918811197441"));}
-            if (userData[message.author.id + message.guild.id].lvl === 4) {awardMsg = 'И получаете роль "IT Любитель" в качестве приза!'; message.guild.members.get(message.author.id).addRole(message.guild.roles.find("id", "468138240210239500")); message.guild.members.get(message.author.id).removeRole(message.guild.roles.find("id", "468124918811197441"));}
-            if (userData[message.author.id + message.guild.id].lvl === 8) {awardMsg = 'И получаете роль "Разбирающийся в IT сфере" в качестве приза!'; message.guild.members.get(message.author.id).addRole(message.guild.roles.find("id", "468138293226373140")); message.guild.members.get(message.author.id).removeRole(message.guild.roles.find("id", "468138240210239500"));}
-            if (userData[message.author.id + message.guild.id].lvl === 16) {awardMsg = 'И получаете роль "Хороший IT-шник" в качестве приза!'; message.guild.members.get(message.author.id).addRole(message.guild.roles.find("id", "468138564715151360")); message.guild.members.get(message.author.id).removeRole(message.guild.roles.find("id", "468138293226373140"));}
-            if (userData[message.author.id + message.guild.id].lvl === 25) {awardMsg = 'И получаете роль "IT Специалист" в качестве приза!'; message.guild.members.get(message.author.id).addRole(message.guild.roles.find("id", "468138604313444372")); message.guild.members.get(message.author.id).removeRole(message.guild.roles.find("id", "468138564715151360"));}
+            if (message.guild.id === '437290658458501143') {
+                if (userData[message.author.id + message.guild.id].lvl === 2) {awardMsg = 'И получаете роль "IT Новичок" в качестве приза!'; message.guild.members.get(message.author.id).addRole(message.guild.roles.find("id", "468124918811197441"));}
+                if (userData[message.author.id + message.guild.id].lvl === 4) {awardMsg = 'И получаете роль "IT Любитель" в качестве приза!'; message.guild.members.get(message.author.id).addRole(message.guild.roles.find("id", "468138240210239500")); message.guild.members.get(message.author.id).removeRole(message.guild.roles.find("id", "468124918811197441"));}
+                if (userData[message.author.id + message.guild.id].lvl === 8) {awardMsg = 'И получаете роль "Разбирающийся в IT сфере" в качестве приза!'; message.guild.members.get(message.author.id).addRole(message.guild.roles.find("id", "468138293226373140")); message.guild.members.get(message.author.id).removeRole(message.guild.roles.find("id", "468138240210239500"));}
+                if (userData[message.author.id + message.guild.id].lvl === 16) {awardMsg = 'И получаете роль "Хороший IT-шник" в качестве приза!'; message.guild.members.get(message.author.id).addRole(message.guild.roles.find("id", "468138564715151360")); message.guild.members.get(message.author.id).removeRole(message.guild.roles.find("id", "468138293226373140"));}
+                if (userData[message.author.id + message.guild.id].lvl === 25) {awardMsg = 'И получаете роль "IT Специалист" в качестве приза!'; message.guild.members.get(message.author.id).addRole(message.guild.roles.find("id", "468138604313444372")); message.guild.members.get(message.author.id).removeRole(message.guild.roles.find("id", "468138564715151360"));}
+            }
             message.author.send('Поздравляем, вы получили **' + userData[message.author.id + message.guild.id].lvl + '** уровень! ' + awardMsg); 
             awardMsg = '';
         }
