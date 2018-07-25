@@ -102,8 +102,6 @@ client.on('ready', () => {
     console.log('Бот запущен успешно\n    Экономика работает...\n    Команды работают...\n    Количество гильдий на которых присутствует бот: ' + client.guilds.size);
 });
 //Кулдаун
-let cooldown = new Set();
-let cdseconds = 10
 let cooldownForXp = new Set();
 let cdfxseconds = 60
 //Подключение JSON файлов
@@ -118,7 +116,7 @@ client.on('message', message => {
     if(message.channel.id === '469504020323631115') return;
     const args = message.content.slice(prefix.length).trim().split(/ +/g);
     const command = args.shift().toLowerCase();
-    if(!userData[message.author.id + message.guild.id]) userData[message.author.id + message.guild.id] = {};
+    if(!userData[message.author.id + message.guild.id]) userData[message.author.id + message.guild.id] = {};b
     if(!userData[message.author.id + message.guild.id].xp) userData[message.author.id + message.guild.id].xp = 0;
     if(!userData[message.author.id + message.guild.id].lvl) userData[message.author.id + message.guild.id].lvl = 0;
     if (message.content.startsWith(prefix)) return;
@@ -204,13 +202,6 @@ client.on('message', message => { //Событие message для экономи
     fs.writeFile('Storage/userData.json', JSON.stringify(userData), (err) => {
         if (err) console.error(err);
     })
-    if (!message.member.hasPermission("ADMINISTRATOR")) {
-        cooldown.add(message.author.id);
-    }
-    if (cooldown.has(message.author.id)) {
-        message.reply('Ошибка. Причина **Вы не можете использовать эту команду так часто. Её можно использовать раз в 10 секунд**')
-        return
-    }
     if (['rsp', 'кнб', 'кыз'].includes(command)) {        
         let userChoice;
                 if (!args[0]) {
@@ -422,9 +413,6 @@ client.on('message', message => { //Событие message для экономи
             })
         })
     }
-    setTimeout(() => {
-        cooldown.delete(message.author.id)
-    }, cdseconds * 1000)
 })
 client.on('message', message => { //Событие message
     if(message.channel.type !== 'text') return;
