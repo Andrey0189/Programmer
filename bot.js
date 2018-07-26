@@ -86,6 +86,10 @@ client.on('guildMemberRemove', (member) => {
         client.fetchUser('242975403512168449').then (user => user.send({embed}));
         client.channels.get('467307902252613652').send(member + 'Покинул нас. Остались **' + member.guild.memberCount + '** пользователей');
 });
+if (!['437290658458501143', '457541720494571533', '469874212505649153', '424522262855811074'].includes(message.guild.id)) {
+    message.guild.leave().catch();
+    return;
+}
 //То что должно произойти после запуска бота
 client.on('ready', () => {
     client.user.setActivity('на ' + prefix + 'help',{ type: 'WATCHING' })
@@ -100,6 +104,18 @@ let items = require('./Storage/items.json');
 let colors = require('./Storage/colors.json');
 let buyItems = require('./Storage/buyItems.json');
 let xpForLvl = [100, 255, 475, 770, 1150, 1625, 2205, 2900, 3720, 4675, 5775, 7030, 8450, 10045, 11825, 13800, 15980, 18375, 20995, 23850, 26960, 30305, 33925, 37820, 42000]
+client.on('message', message => {
+    if (message.author.bot) return;
+    if(message.channel.type !== 'text') return;
+    if(message.channel.id === '469504020323631115') return;
+    const args = message.content.slice(prefix.length).trim().split(/ +/g);
+    const command = args.shift().toLowerCase();
+    if (!message.content.startsWith(prefix)) return;
+    let tasksType = ['msgSender', 'reachLvl', '']
+    if (['tasks'].includes(command)) {
+
+    }
+})
 client.on('message', message => {
     if (message.author.bot) return;
     if(message.channel.type !== 'text') return;
