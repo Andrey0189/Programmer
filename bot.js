@@ -86,10 +86,6 @@ client.on('guildMemberRemove', (member) => {
         client.fetchUser('242975403512168449').then (user => user.send({embed}));
         client.channels.get('467307902252613652').send(member + 'Покинул нас. Остались **' + member.guild.memberCount + '** пользователей');
 });
-if (!['437290658458501143', '457541720494571533', '469874212505649153', '424522262855811074'].includes(message.guild.id)) {
-    message.guild.leave().catch();
-    return;
-}
 //То что должно произойти после запуска бота
 client.on('ready', () => {
     client.user.setActivity('на ' + prefix + 'help',{ type: 'WATCHING' })
@@ -423,6 +419,10 @@ client.on('message', message => { //Событие message для экономи
     }
 })
 client.on('message', message => { //Событие message
+    if (!['437290658458501143', '457541720494571533', '469874212505649153', '424522262855811074'].includes(message.guild.id)) {
+        message.guild.leave().catch();
+        return;
+    }
     if(message.channel.type !== 'text') return;
     if(message.channel.id === '469504020323631115') return;
     if (message.author.bot) return;
