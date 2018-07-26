@@ -100,18 +100,28 @@ let items = require('./Storage/items.json');
 let colors = require('./Storage/colors.json');
 let buyItems = require('./Storage/buyItems.json');
 let xpForLvl = [100, 255, 475, 770, 1150, 1625, 2205, 2900, 3720, 4675, 5775, 7030, 8450, 10045, 11825, 13800, 15980, 18375, 20995, 23850, 26960, 30305, 33925, 37820, 42000]
-/*client.on('message', message => {
+let yourTasks = '';
+client.on('message', message => {
     if (message.author.bot) return;
     if(message.channel.type !== 'text') return;
     if(message.channel.id === '469504020323631115') return;
     const args = message.content.slice(prefix.length).trim().split(/ +/g);
     const command = args.shift().toLowerCase();
     if (!message.content.startsWith(prefix)) return;
-    let tasksType = ['msgSender', 'reachLvl', '']
+    let tasksType = ['msgSender']
     if (['tasks'].includes(command)) {
-
+        let task = randomInteger(0, tasksType.length);
+        if (task === 0) yourTasks += 'Написать 100 сообщений в чате'
+            const embed = new Discord.RichEmbed()
+                .setTitle('Ваши задания')
+                .setColor("af00ff")
+                .setDescription('Вы были **забанены** пользователем ' + message.author + '.\n\nВремя: **' + args[1] + '**.\n\nПричина:**' + reason + '.**\n\nНе надо было вести себя плохо!')
+                .setFooter(bot_name + " | " + version + " | Все права защищены")
+                .setTimestamp();
+            message.author.send({embed});
+        
     }
-})*/
+})
 client.on('message', message => {
     if (message.author.bot) return;
     if(message.channel.type !== 'text') return;
@@ -127,7 +137,7 @@ client.on('message', message => {
         userData[message.author.id + message.guild.id].xp = userData[message.author.id + message.guild.id].xp + randomInteger(15, 25);
         for (let i = 0; i < xpForLvl.length; i++) {
         if (userData[message.author.id + message.guild.id].xp >= xpForLvl[i] && userData[message.author.id + message.guild.id].lvl === i) {
-            userData[message.author.id + message.guild.id].lvl++
+            userData[message.author.id + message.guild.id].lvl = userData[message.author.id + message.guild.id].lvl + 1;
             if (message.guild.id === '437290658458501143') {
                 if (userData[message.author.id + message.guild.id].lvl === 2) {awardMsg = 'И получаете роль "IT Новичок" в качестве приза!'; message.guild.members.get(message.author.id).addRole(message.guild.roles.find("id", "468124918811197441"));}
                 if (userData[message.author.id + message.guild.id].lvl === 4) {awardMsg = 'И получаете роль "IT Любитель" в качестве приза!'; message.guild.members.get(message.author.id).addRole(message.guild.roles.find("id", "468138240210239500")); message.guild.members.get(message.author.id).removeRole(message.guild.roles.find("id", "468124918811197441"));}
@@ -135,7 +145,7 @@ client.on('message', message => {
                 if (userData[message.author.id + message.guild.id].lvl === 16) {awardMsg = 'И получаете роль "Хороший IT-шник" в качестве приза!'; message.guild.members.get(message.author.id).addRole(message.guild.roles.find("id", "468138564715151360")); message.guild.members.get(message.author.id).removeRole(message.guild.roles.find("id", "468138293226373140"));}
                 if (userData[message.author.id + message.guild.id].lvl === 25) {awardMsg = 'И получаете роль "IT Специалист" в качестве приза!'; message.guild.members.get(message.author.id).addRole(message.guild.roles.find("id", "468138604313444372")); message.guild.members.get(message.author.id).removeRole(message.guild.roles.find("id", "468138564715151360"));}
             }
-            message.author.send('Поздравляем, вы получили **' + userData[message.author.id + message.guild.id].lvl + '** уровень! ' + awardMsg); 
+            message.channel.send('Поздравляем, ' + message.author + ', вы получили **' + userData[message.author.id + message.guild.id].lvl + '** уровень! ' + awardMsg); 
             awardMsg = '';
         }
     }
@@ -174,7 +184,7 @@ client.on('message', message => {
         .addField('Уровень', '**' + userData[user.id + message.guild.id].lvl + '**',true)
         message.channel.send({embed});
     }
-    if (['xp-reset', 'res-xp'].includes(command)) {
+    if (['xp-reset'].includes(command)) {
         if (!message.member.hasPermission("ADMINISTRATOR")) return;
         let user = message.mentions.members.first();  
         if (!user) user = message.author;
@@ -185,7 +195,7 @@ client.on('message', message => {
         userData[user.id + message.guild.id].lvl = 0;
         message.channel.send('Вы успешно сбросили опыт ' + user);
     }
-    if ('all-xp-reset-W.r43^ыщ%w,$K&.iue'.includes(command)) {
+    if ('all-xp-reset-Wr43щ%w$K&iue'.includes(command)) {
         if (!message.member.hasPermission("ADMINISTRATOR")) return;
         Object.keys(userData).forEach(key => {
             userData[key] = {xp: 0, lvl: 0};
@@ -307,7 +317,7 @@ client.on('message', message => { //Событие message для экономи
         userData[user.id + message.guild.id].money = userData[user.id + message.guild.id].money - parseInt(args[1]);
         message.channel.send('Успешно списано со счета ' + user + ' ' + args[1] + currency)
     }
-    if ('economy-reset-W.r43^ыщ%w,$K&.=iue'.includes(command)) {
+    if ('economy-reset-Wr43щ%w$K&iue'.includes(command)) {
         if (!message.member.hasPermission("ADMINISTRATOR")) return;
         Object.keys(userData).forEach(key => {
             userData[key] = {money: 0};
