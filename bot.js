@@ -457,6 +457,9 @@ client.on('message', message => { //Событие message
     function replMsg (msg) {
         message.reply(msg)
     }
+    if ('guilds'.includes(command)) {
+        message.channel.send('Я присутствую на **' + client.guilds.size + '** гильдиях');
+    }
     if ('rainbow'.includes(command)) {
         message.channel.send('Готово :white_check_mark:');
         let colors = ["#ff0000", "#ffa500", "#ffff00", "#00ff00", "#00BFFF", "#0000FF", "#ff00ff"];
