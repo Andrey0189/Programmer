@@ -68,7 +68,7 @@ client.on('guildMemberAdd', (member) => {
     const embed2 = new Discord.RichEmbed()
         .setTitle('Пополнение!')
         .setColor('af00ff')
-        .setDescription('На сервер пришел ' + member + '\n\nТеперь нас **' + member.guild.memberCount + '**')
+        .setDescription('На сервер **' + member.guild + '** пришел ' + member + '\n\nУчастников на этом сервере теперь **' + member.guild.memberCount + '**')
         .setFooter(footer)
         .setTimestamp()
         client.fetchUser('242975403512168449').then (user => user.send({embed: embed2}));
@@ -84,7 +84,7 @@ client.on('guildMemberRemove', (member) => {
         .setFooter(footer)
         .setTimestamp()
         client.fetchUser('242975403512168449').then (user => user.send({embed}));
-        client.channels.get('467307902252613652').send(member + 'Покинул нас. Остались **' + member.guild.memberCount + '** пользователей');
+        client.channels.get('467307902252613652').send(member + 'Покинул' + member.guild + ' Остались **' + member.guild.memberCount + '** пользователей');
 });
 //То что должно произойти после запуска бота
 client.on('ready', () => {
@@ -100,7 +100,7 @@ let items = require('./Storage/items.json');
 let colors = require('./Storage/colors.json');
 let buyItems = require('./Storage/buyItems.json');
 let xpForLvl = [100, 255, 475, 770, 1150, 1625, 2205, 2900, 3720, 4675, 5775, 7030, 8450, 10045, 11825, 13800, 15980, 18375, 20995, 23850, 26960, 30305, 33925, 37820, 42000]
-client.on('message', message => {
+/*client.on('message', message => {
     if (message.author.bot) return;
     if(message.channel.type !== 'text') return;
     if(message.channel.id === '469504020323631115') return;
@@ -111,7 +111,7 @@ client.on('message', message => {
     if (['tasks'].includes(command)) {
 
     }
-})
+})*/
 client.on('message', message => {
     if (message.author.bot) return;
     if(message.channel.type !== 'text') return;
