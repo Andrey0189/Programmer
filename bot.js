@@ -60,7 +60,7 @@ client.on('guildMemberAdd', (member) => {
     member.addRole(people);
     const embed = new Discord.RichEmbed()
         .setTitle('Дороу')
-        .setDescription('**Приветствую тебя ' + member + ', я - бот этого сервера. У меня есть магазин, экономика, миниигры, большое количесто команд. А на нашем сервере ты сможешь найти хороших друзей, редкие пинги, возможность поделиться своим творчеством, и посмотреть как его оценят другие люди. В скором времени у нас выйдет много обновлений. С уважением ' + bot_name + ' ' + version)
+        .setDescription('**Приветствую тебя ' + member + ', я - бот этого сервера. У меня есть магазин, экономика, миниигры, большое количесто команд. А на нашем сервере ты сможешь найти хороших друзей, редкие пинги, возможность поделиться своим творчеством, и посмотреть как его оценят другие люди. В скором времени у нас выйдет много обновлений. С уважением ' + bot_name + ' ' + version + '**')
         .setColor('af00ff')
         .setFooter(footer)
         .setTimestamp();
@@ -101,16 +101,16 @@ let colors = require('./Storage/colors.json');
 let buyItems = require('./Storage/buyItems.json');
 let xpForLvl = [100, 255, 475, 770, 1150, 1625, 2205, 2900, 3720, 4675, 5775, 7030, 8450, 10045, 11825, 13800, 15980, 18375, 20995, 23850, 26960, 30305, 33925, 37820, 42000]
 let yourTasks = '';
-client.on('message', message => {
+/*client.on('message', message => {
     if (message.author.bot) return;
     if(message.channel.type !== 'text') return;
     if(message.channel.id === '469504020323631115') return;
     const args = message.content.slice(prefix.length).trim().split(/ +/g);
     const command = args.shift().toLowerCase();
     if (!message.content.startsWith(prefix)) return;
-    let tasksType = ['msgSender']
+    let tasksTypes = ['msgSender']
     if (['tasks'].includes(command)) {
-        let task = randomInteger(0, tasksType.length);
+        let task = randomInteger(0, tasksTypes.length);
         if (task === 0) yourTasks += 'Написать 100 сообщений в чате'
             const embed = new Discord.RichEmbed()
                 .setTitle('Ваши задания')
@@ -119,51 +119,22 @@ client.on('message', message => {
                 .setFooter(bot_name + " | " + version + " | Все права защищены")
                 .setTimestamp();
             message.author.send({embed});
-        
     }
-})
+})*/
 client.on('message', message => {
     if (message.author.bot) return;
     if(message.channel.type !== 'text') return;
     if(message.channel.id === '469504020323631115') return;
     const args = message.content.slice(prefix.length).trim().split(/ +/g);
     const command = args.shift().toLowerCase();
+    let userData = require('./Storage/userData.json');
     if(!userData[message.author.id + message.guild.id]) userData[message.author.id + message.guild.id] = {};
     if(!userData[message.author.id + message.guild.id].xp) userData[message.author.id + message.guild.id].xp = 0;
     if(!userData[message.author.id + message.guild.id].lvl) userData[message.author.id + message.guild.id].lvl = 0;
-    if (message.content.startsWith(prefix)) return;
-    let awardMsg = '';
-        if (cooldownForXp.has(message.author.id)) return;
-        userData[message.author.id + message.guild.id].xp = userData[message.author.id + message.guild.id].xp + randomInteger(15, 25);
-        for (let i = 0; i < xpForLvl.length; i++) {
-        if (userData[message.author.id + message.guild.id].xp >= xpForLvl[i] && userData[message.author.id + message.guild.id].lvl === i) {
-            userData[message.author.id + message.guild.id].lvl = userData[message.author.id + message.guild.id].lvl + 1;
-            if (message.guild.id === '437290658458501143') {
-                if (userData[message.author.id + message.guild.id].lvl === 2) {awardMsg = 'И получаете роль "IT Новичок" в качестве приза!'; message.guild.members.get(message.author.id).addRole(message.guild.roles.find("id", "468124918811197441"));}
-                if (userData[message.author.id + message.guild.id].lvl === 4) {awardMsg = 'И получаете роль "IT Любитель" в качестве приза!'; message.guild.members.get(message.author.id).addRole(message.guild.roles.find("id", "468138240210239500")); message.guild.members.get(message.author.id).removeRole(message.guild.roles.find("id", "468124918811197441"));}
-                if (userData[message.author.id + message.guild.id].lvl === 8) {awardMsg = 'И получаете роль "Разбирающийся в IT сфере" в качестве приза!'; message.guild.members.get(message.author.id).addRole(message.guild.roles.find("id", "468138293226373140")); message.guild.members.get(message.author.id).removeRole(message.guild.roles.find("id", "468138240210239500"));}
-                if (userData[message.author.id + message.guild.id].lvl === 16) {awardMsg = 'И получаете роль "Хороший IT-шник" в качестве приза!'; message.guild.members.get(message.author.id).addRole(message.guild.roles.find("id", "468138564715151360")); message.guild.members.get(message.author.id).removeRole(message.guild.roles.find("id", "468138293226373140"));}
-                if (userData[message.author.id + message.guild.id].lvl === 25) {awardMsg = 'И получаете роль "IT Специалист" в качестве приза!'; message.guild.members.get(message.author.id).addRole(message.guild.roles.find("id", "468138604313444372")); message.guild.members.get(message.author.id).removeRole(message.guild.roles.find("id", "468138564715151360"));}
-            }
-            message.channel.send('Поздравляем, ' + message.author + ', вы получили **' + userData[message.author.id + message.guild.id].lvl + '** уровень! ' + awardMsg); 
-            awardMsg = '';
-        }
-    }
-    if(!message.content.startsWith(prefix) && !cooldownForXp.has(message.author.id)) cooldownForXp.add(message.author.id);
-    setTimeout(() => {
-        cooldownForXp.delete(message.author.id)
-    }, cdfxseconds * 1000)
-})
-client.on('message', message => {
-    if (message.author.bot) return;
-    if(message.channel.type !== 'text') return;
-    if(message.channel.id === '469504020323631115') return;
-    const args = message.content.slice(prefix.length).trim().split(/ +/g);
-    const command = args.shift().toLowerCase();
-    if(!userData[message.author.id + message.guild.id]) userData[message.author.id + message.guild.id] = {};
-    if(!userData[message.author.id + message.guild.id].xp) userData[message.author.id + message.guild.id].xp = 0;
-    if(!userData[message.author.id + message.guild.id].lvl) userData[message.author.id + message.guild.id].lvl = 0;
-    if(message.content.indexOf(prefix) !== 0) return;
+    fs.writeFile('Storage/userData.json', JSON.stringify(userData), (err) => {
+        if (err) console.error(err);
+    })
+    if(message.content.startsWith(prefix)) {
     if (['rank', 'rang'].includes(command)) {
         let user = message.mentions.members.first();       
         const embed = new Discord.RichEmbed()
@@ -201,6 +172,42 @@ client.on('message', message => {
             userData[key] = {xp: 0, lvl: 0};
         })
         message.channel.send('Вы успешно сбросили опыт со всего вашего сервера');
+    }
+    } else if (!message.content.startsWith(prefix)) {
+        client.on('message', message => {
+            if (message.author.bot) return;
+            if(message.channel.type !== 'text') return;
+            if(message.channel.id === '469504020323631115') return;
+            const args = message.content.slice(prefix.length).trim().split(/ +/g);
+            const command = args.shift().toLowerCase();
+            if(!userData[message.author.id + message.guild.id]) userData[message.author.id + message.guild.id] = {};
+            if(!userData[message.author.id + message.guild.id].xp) userData[message.author.id + message.guild.id].xp = 0;
+            if(!userData[message.author.id + message.guild.id].lvl) userData[message.author.id + message.guild.id].lvl = 0;
+            fs.writeFile('Storage/userData.json', JSON.stringify(userData), (err) => {
+                if (err) console.error(err);
+            })
+            let awardMsg = '';
+                if (cooldownForXp.has(message.author.id)) return;
+                userData[message.author.id + message.guild.id].xp = userData[message.author.id + message.guild.id].xp + randomInteger(15, 25);
+                for (let i = 0; i < xpForLvl.length; i++) {
+                if (userData[message.author.id + message.guild.id].xp >= xpForLvl[i] && userData[message.author.id + message.guild.id].lvl === i) {
+                    userData[message.author.id + message.guild.id].lvl = userData[message.author.id + message.guild.id].lvl++;
+                    if (message.guild.id === '437290658458501143') {
+                        if (userData[message.author.id + message.guild.id].lvl === 2) {awardMsg = 'И получаете роль "IT Новичок" в качестве приза!'; message.guild.members.get(message.author.id).addRole(message.guild.roles.find("id", "468124918811197441"));}
+                        if (userData[message.author.id + message.guild.id].lvl === 4) {awardMsg = 'И получаете роль "IT Любитель" в качестве приза!'; message.guild.members.get(message.author.id).addRole(message.guild.roles.find("id", "468138240210239500")); message.guild.members.get(message.author.id).removeRole(message.guild.roles.find("id", "468124918811197441"));}
+                        if (userData[message.author.id + message.guild.id].lvl === 8) {awardMsg = 'И получаете роль "Разбирающийся в IT сфере" в качестве приза!'; message.guild.members.get(message.author.id).addRole(message.guild.roles.find("id", "468138293226373140")); message.guild.members.get(message.author.id).removeRole(message.guild.roles.find("id", "468138240210239500"));}
+                        if (userData[message.author.id + message.guild.id].lvl === 16) {awardMsg = 'И получаете роль "Хороший IT-шник" в качестве приза!'; message.guild.members.get(message.author.id).addRole(message.guild.roles.find("id", "468138564715151360")); message.guild.members.get(message.author.id).removeRole(message.guild.roles.find("id", "468138293226373140"));}
+                        if (userData[message.author.id + message.guild.id].lvl === 25) {awardMsg = 'И получаете роль "IT Специалист" в качестве приза!'; message.guild.members.get(message.author.id).addRole(message.guild.roles.find("id", "468138604313444372")); message.guild.members.get(message.author.id).removeRole(message.guild.roles.find("id", "468138564715151360"));}
+                    }
+                    message.channel.send('Поздравляем, ' + message.author + ', вы получили **' + userData[message.author.id + message.guild.id].lvl + '** уровень! ' + awardMsg); 
+                    awardMsg = '';
+                }
+            }
+            if(!message.content.startsWith(prefix) && !cooldownForXp.has(message.author.id)) cooldownForXp.add(message.author.id);
+            setTimeout(() => {
+                cooldownForXp.delete(message.author.id)
+            }, cdfxseconds * 1000)
+        })
     }
 })
 client.on('message', message => { //Событие message для экономики
@@ -509,7 +516,7 @@ client.on('message', message => { //Событие message
     if (['ship', 'love', 'шип'].includes(command)) {
         if (!args[0]) args[0] = message.guild.members.random();
         if (!args[1]) args[1] = message.author
-        if (args[0].length > 30 || args[1].length > 30) return message.reply('Ошибка. Причина: **Аргумент не может быть длиннее 30 символов');
+        if (args[0].length > 30 || args[1].length > 30) return message.reply('Ошибка. Причина: **Аргумент не может быть длиннее 30 символов**');
         let loveText
         let shkala
         let percents = randomInteger(0, 100)
@@ -744,7 +751,7 @@ client.on('message', message => { //Событие message
                 message.channel.send(user + 'Был успешно забанен. Жалко пацана');
                 message.guild.member(user).ban(reason);
             } else {
-                message.reply('Ошибка. Причина: **Вы не можете использовать команду ban, вы должны иметь право `Администратор`');
+                message.reply('Ошибка. Причина: **Вы не можете использовать команду ban, вы должны иметь право `Администратор`**');
                 return
             }
         }
@@ -803,7 +810,7 @@ client.on('message', message => { //Событие message
             message.delete();
         }
         
-            if (!args[0]) message.reply('Ошибка. Причина: **Вы забыли указать первый аргумент'); return;
+            if (!args[0]) message.reply('Ошибка. Причина: **Вы забыли указать первый аргумент**'); return;
     
             if (!args[1]) args[1] = 1;
     
