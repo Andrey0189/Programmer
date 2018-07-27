@@ -185,7 +185,7 @@ client.on('message', message => {
                 userData[message.author.id + message.guild.id].xp = userData[message.author.id + message.guild.id].xp + randomInteger(15, 25);
                 for (let i = 0; i < xpForLvl.length; i++) {
                 if (userData[message.author.id + message.guild.id].xp >= xpForLvl[i] && userData[message.author.id + message.guild.id].lvl === i) {
-                    userData[message.author.id + message.guild.id].lvl = userData[message.author.id + message.guild.id].lvl++;
+                    userData[message.author.id + message.guild.id].lvl = userData[message.author.id + message.guild.id].lvl + 1;
                     if (message.guild.id === '437290658458501143') {
                         if (userData[message.author.id + message.guild.id].lvl === 2) {awardMsg = 'И получаете роль "IT Новичок" в качестве приза!'; message.guild.members.get(message.author.id).addRole(message.guild.roles.find("id", "468124918811197441"));}
                         if (userData[message.author.id + message.guild.id].lvl === 4) {awardMsg = 'И получаете роль "IT Любитель" в качестве приза!'; message.guild.members.get(message.author.id).addRole(message.guild.roles.find("id", "468138240210239500")); message.guild.members.get(message.author.id).removeRole(message.guild.roles.find("id", "468124918811197441"));}
