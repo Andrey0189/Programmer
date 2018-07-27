@@ -131,7 +131,7 @@ client.on('message', message => {
     if(!userData[message.author.id + message.guild.id]) userData[message.author.id + message.guild.id] = {};
     if(!userData[message.author.id + message.guild.id].xp) userData[message.author.id + message.guild.id].xp = 0;
     if(!userData[message.author.id + message.guild.id].lvl) userData[message.author.id + message.guild.id].lvl = 0;
-    let userData = require('./Storage/userData.json');
+    userData = require('./Storage/userData.json');
     if(message.content.startsWith(prefix)) {
     if (['rank', 'rang'].includes(command)) {
         let user = message.mentions.members.first();       
@@ -213,7 +213,7 @@ client.on('message', message => { //Событие message для экономи
     let currency = '₽'
     if(!userData[message.author.id + message.guild.id]) userData[message.author.id + message.guild.id] = {};
     if(!userData[message.author.id + message.guild.id].money) userData[message.author.id + message.guild.id].money = 0;
-    let userData = require('./Storage/userData.json');
+    userData = require('./Storage/userData.json');
     fs.writeFile('Storage/userData.json', JSON.stringify(userData), (err) => {
         if (err) console.error(err);
     })
