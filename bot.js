@@ -442,10 +442,10 @@ client.on('message', message => { //Событие message
     invites.forEach(invite => {
         arr.push(invite.code); 
     })
-    let matches = message.content.match(/discord(app\.com|\.gg|\.me|\.io)\/?(invite\/)?([_a-zA-Z0-9]{5,32})/gi);
+    let matches = message.content.match(/https:\/\/discord(app\.com|\.gg|\.me|\.io)\/?(invite\/)?([_a-zA-Z0-9]{5,32})/gi);
     if (matches)
     matches.forEach((match) => {
-    if (!arr.includes(match.match(/discord(app\.com|\.gg|\.me|\.io)\/?(invite\/)?([_a-zA-Z0-9]{5,32})/i)[3])) {
+    if (!arr.includes(match.match(/https:\/\/discord(app\.com|\.gg|\.me|\.io)\/?(invite\/)?([_a-zA-Z0-9]{5,32})/i)[3])) {
         const embed = new Discord.RichEmbed()
             .setTitle("Информация о предупреждениях")
             .setColor("af00ff")
