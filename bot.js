@@ -131,9 +131,7 @@ client.on('message', message => {
     if(!userData[message.author.id + message.guild.id]) userData[message.author.id + message.guild.id] = {};
     if(!userData[message.author.id + message.guild.id].xp) userData[message.author.id + message.guild.id].xp = 0;
     if(!userData[message.author.id + message.guild.id].lvl) userData[message.author.id + message.guild.id].lvl = 0;
-    fs.writeFile('Storage/userData.json', JSON.stringify(userData), (err) => {
-        if (err) console.error(err);
-    })
+    let userData = require('./Storage/userData.json');
     if(message.content.startsWith(prefix)) {
     if (['rank', 'rang'].includes(command)) {
         let user = message.mentions.members.first();       
@@ -174,15 +172,11 @@ client.on('message', message => {
         message.channel.send('Вы успешно сбросили опыт со всего вашего сервера');
     }
     } else if (!message.content.startsWith(prefix)) {
-        client.on('message', message => {
             if (message.author.bot) return;
-            if(message.channel.type !== 'text') return;
-            if(message.channel.id === '469504020323631115') return;
+            if (message.channel.type !== 'text') return;
+            if (message.channel.id === '469504020323631115') return;
             const args = message.content.slice(prefix.length).trim().split(/ +/g);
             const command = args.shift().toLowerCase();
-            if(!userData[message.author.id + message.guild.id]) userData[message.author.id + message.guild.id] = {};
-            if(!userData[message.author.id + message.guild.id].xp) userData[message.author.id + message.guild.id].xp = 0;
-            if(!userData[message.author.id + message.guild.id].lvl) userData[message.author.id + message.guild.id].lvl = 0;
             fs.writeFile('Storage/userData.json', JSON.stringify(userData), (err) => {
                 if (err) console.error(err);
             })
@@ -207,9 +201,8 @@ client.on('message', message => {
             setTimeout(() => {
                 cooldownForXp.delete(message.author.id)
             }, cdfxseconds * 1000)
-        })
     }
-})
+});
 client.on('message', message => { //Событие message для экономики
     if(message.content.indexOf(prefix) !== 0) return;
     if(message.channel.type !== 'text') return;
@@ -220,6 +213,7 @@ client.on('message', message => { //Событие message для экономи
     let currency = '₽'
     if(!userData[message.author.id + message.guild.id]) userData[message.author.id + message.guild.id] = {};
     if(!userData[message.author.id + message.guild.id].money) userData[message.author.id + message.guild.id].money = 0;
+    let userData = require('./Storage/userData.json');
     fs.writeFile('Storage/userData.json', JSON.stringify(userData), (err) => {
         if (err) console.error(err);
     })
