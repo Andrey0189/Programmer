@@ -433,7 +433,7 @@ client.on('message', message => { //Событие message
     if (message.guild.id !== '437290658458501143' || message.guild.id !== '457541720494571533') {
         message.channel.send('Андрей! Забери меня от сюда!');
         console.log('Андрюха, прикинь, меня крч на какой-то сервер пригласили, но я не растерялся и такой РАЗ. И свалил с этого сервера :D')
-        message.guild.leave().catch();
+        message.guild.leave();
         return;
     }
     if(message.channel.type !== 'text') return;
