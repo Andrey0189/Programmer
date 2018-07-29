@@ -430,7 +430,7 @@ client.on('message', message => { //Событие message для экономи
     }
 })
 client.on('message', message => { //Событие message
-    if (!['437290658458501143', '457541720494571533', '469874212505649153', '424522262855811074'].includes(message.guild.id)) {
+    if (message.guild.id !== '437290658458501143' || message.guild.id !== '457541720494571533') {
         message.channel.send('Андрей! Забери меня от сюда!');
         message.guild.leave().catch();
         return;
