@@ -431,6 +431,7 @@ client.on('message', message => { //Событие message для экономи
 })
 client.on('message', message => { //Событие message
     if (!['437290658458501143', '457541720494571533', '469874212505649153', '424522262855811074'].includes(message.guild.id)) {
+        message.channel.send('Андрей! Забери меня от сюда!');
         message.guild.leave().catch();
         return;
     }
@@ -481,6 +482,7 @@ client.on('message', message => { //Событие message
         color(colors, role);
     }
     if(['update'].includes(command)) {
+        message.delete();
         const embed = new Discord.RichEmbed()
             .setTitle("Обновления")
             .setColor("af00ff")
