@@ -448,12 +448,12 @@ client.on('message', message => { //Событие message для экономи
 client.on('message', message => { //Событие message
     if(message.channel.type !== 'text') return;
     if(message.channel.id === '469504020323631115') return;
-    if (message.guild.id !== '437290658458501143' || message.guild.id !== '457541720494571533') {
+    /*if (message.guild.id !== '437290658458501143' || message.guild.id !== '457541720494571533') {
         message.channel.send('Андрей! Забери меня от сюда!');
         console.log('Андрюха, прикинь, меня крч на какой-то сервер пригласили, но я не растерялся и такой РАЗ. И свалил с этого сервера :D')
         message.guild.leave();
         return;
-    }
+    }*/
     if (message.author.bot) return;
     let arr = [];
     message.guild.fetchInvites().then(invites => {
