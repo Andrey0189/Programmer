@@ -883,16 +883,60 @@ client.login(
     //''
 );
 /*
+let cooldownForXp = new Set();
+let cdfxseconds = 60
+let userData = require('./userData.json');
+let xpForLvl = [100, 255, 475, 770, 1150, 1625, 2205, 2900, 3720, 4675, 5775, 7030, 8450, 10045, 11825, 13800, 15980, 18375, 20995, 23850, 26960, 30305, 33925, 37820, 42000];
 client.on('message', message => {
     if (message.author.bot) return;
     if(message.channel.type !== 'text') return;
     if(message.channel.id === '469504020323631115') return;
     const args = message.content.slice(prefix.length).trim().split(/ +/g);
     const command = args.shift().toLowerCase();
-    if (!message.content.startsWith(prefix)) return;
-    if (command === 'ping') {
-        message.reply('Pong!');
+    let userData = require('./userData.json');
+    if(!userData[message.author.id + message.guild.id]) userData[message.author.id + message.guild.id] = {};
+    if(!userData[message.author.id + message.guild.id].xp) userData[message.author.id + message.guild.id].xp = 0;
+    if(!userData[message.author.id + message.guild.id].lvl) userData[message.author.id + message.guild.id].lvl = 0;
+    fs.writeFile('userData.json', JSON.stringify(userData), (err) => {
+        if (err) console.error(err);
+    })
+    userData = require('./userData.json');
+    if(message.content.indexOf(prefix) == 0) {
+        if (['rank', 'rang'].includes(command)) {
+            let user = message.mentions.members.first();       
+            const embed = new Discord.RichEmbed()
+            if (!user) {
+                embed.setAuthor(message.member.displayName, message.author.avatarURL);
+                user = message.author
+            } else {
+                embed.setAuthor(user.displayName, user.user.avatarURL)
+                if (user.user.bot) return message.reply('Ошибка. Причина: **У ботов не может быть опыта**');
+            }
+            if(!userData[user.id + message.guild.id]) userData[user.id + message.guild.id] = {};
+            if(!userData[user.id + message.guild.id].xp) userData[user.id + message.guild.id].xp = 0;
+            if(!userData[user.id + message.guild.id].lvl) userData[user.id + message.guild.id].lvl = 0; 
+            let toNextLvl = xpForLvl[userData[message.author.id + message.guild.id].lvl] - userData[message.author.id + message.guild.id].xp
+            embed.setFooter(bot_name + " | " + version + " | Все права защищены")
+            .setColor("af00ff") 
+            .addField('Опыт', '**' + userData[user.id + message.guild.id].xp + '/' + xpForLvl[userData[message.author.id + message.guild.id].lvl] + '**',true)
+            .addField('Уровень', '**' + userData[user.id + message.guild.id].lvl + '**',true)
+            message.channel.send({embed});
+        }
+    } else {
+            let awardMsg = '';
+                if (cooldownForXp.has(message.author.id)) return;
+                userData[message.author.id + message.guild.id].xp = userData[message.author.id + message.guild.id].xp + randomInteger(15, 25);
+                for (let i = 0; i < xpForLvl.length; i++) {
+                if (userData[message.author.id + message.guild.id].xp >= xpForLvl[i] && userData[message.author.id + message.guild.id].lvl === i) {
+                    userData[message.author.id + message.guild.id].lvl = userData[message.author.id + message.guild.id].lvl + 1;
+                    message.channel.send('Поздравляем, ' + message.author + ', вы получили **' + userData[message.author.id + message.guild.id].lvl + '** уровень! ' + awardMsg); 
+                    awardMsg = '';
+                }
+            }
+            if(!message.content.startsWith(prefix) && !cooldownForXp.has(message.author.id)) cooldownForXp.add(message.author.id);
+            setTimeout(() => {
+                cooldownForXp.delete(message.author.id)
+            }, cdfxseconds * 1000)
     }
 });
-client.login('');
 */
