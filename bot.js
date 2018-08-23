@@ -882,3 +882,17 @@ client.login(
     process.env.BOT_TOKEN
     //''
 );
+/*
+client.on('message', message => {
+    if (message.author.bot) return;
+    if(message.channel.type !== 'text') return;
+    if(message.channel.id === '469504020323631115') return;
+    const args = message.content.slice(prefix.length).trim().split(/ +/g);
+    const command = args.shift().toLowerCase();
+    if (!message.content.startsWith(prefix)) return;
+    if (command === 'ping') {
+        message.reply('Pong!');
+    }
+});
+client.login('');
+*/
