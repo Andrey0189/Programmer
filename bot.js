@@ -105,7 +105,7 @@ client.on('guildMemberRemove', (member) => {
 });
 //То что должно произойти после запуска бота
 client.on('ready', () => {
-    client.user.setActivity('Рефакторинг',{ type: 'PLAYING' });
+    client.user.setActivity(prefix + 'help',{ type: 'PLAYING' });
     console.log('Бот запущен успешно\n    Экономика работает...\n    Команды работают...\n    Количество гильдий на которых присутствует бот: ' + client.guilds.size);
 });
 client.on('message', (message) => {
@@ -403,7 +403,7 @@ client.on('message', (message) => {
             const embed = new Discord.RichEmbed()
             .setTitle('Автар')
             .setColor('af00ff')
-            .setDescription('Пользователя ' + user.user.tag + ' (' + user + ')')
+            .setDescription('Пользователя ' + user.user.tag + '(' + user + ')')
             .setImage(user.user.avatarURL)
             .setFooter(footer)
             .setTimestamp();
