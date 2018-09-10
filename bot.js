@@ -403,7 +403,7 @@ client.on('message', (message) => {
             const embed = new Discord.RichEmbed()
             .setTitle('Автар')
             .setColor('af00ff')
-            .setDescription('Пользователя ' + user.user.tag + '(' + user + ')')
+            .setDescription('Пользователя ' + user.user.tag + ' (' + user + ')')
             .setImage(user.user.avatarURL)
             .setFooter(footer)
             .setTimestamp();
