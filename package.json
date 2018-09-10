@@ -10,8 +10,12 @@
   "license": "ISC",
   "dependencies": {
     "discord-eco": "0.0.10",
-    "discord.js": "^11.3.2",
+    "discord.js": "^11.4.2",
     "foreach-timeout": "^2.0.2",
-    "fs": "0.0.1-security"
+    "fs": "0.0.1-security",
+    "mysql": "^2.16.0",
+    "npm": "^6.4.1",
+    "request": "^2.88.0",
+    "util": "^0.11.0"
   }
 }
