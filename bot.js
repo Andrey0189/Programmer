@@ -32,13 +32,7 @@ module.exports = {
 let prefix = '='; //Префикс
 let currency = '₽'; //Валюта
 //Роли
-let moder = `467284420303257621`
-let people = '467301169610489866'
-let owner = '437291380625113108'
-let plus = '468089974320005121'
-let premium = '468090066145771521'
-let watcher = '468090164523040768'
-let epic = '468090270739595266'
+let people = '489338031350743052'
 let muted = '469135765427847178'
 //Другие переменные и константы
 const bot_name = 'Программист';
@@ -123,8 +117,9 @@ client.on('message', (message) => {
         message.delete();
         if (!message.content.match(hexreg)) return message.author.send('Вы указали неправильную структуру цвета');
         message.guild.createRole({
+            "permissions" : 0,
             "name" : message.content, 
-            "color" : message.content
+            "color" : message.content,
         }).catch(() => {message.author.send('Произошла ошибка')})
         .then((role) => {
             message.member.addRole(people);
@@ -220,11 +215,17 @@ client.on('message', (message) => {
                 }
             }
     }
+    //people - 104188928
+    //plus - 104193088
+    //premium - 104193088
+    //watcher - 104193216 
+    //epic - 104332736
     if (command === 'change-color') {
         if (!args[0]) return err('Вы не указали цвет'); 
         if (!args[0].match(hexreg)) return err('Вы указали неправильную структуру цвета');
-        message.member.removeRole(message.member.roles.find(role => role.name.match(hexreg))).catch();
+        if (message.member.roles.find(role => role.name.match(hexreg))) message.member.removeRole(message.member.roles.find(role => role.name.match(hexreg))).catch();
         message.guild.createRole({
+            "permissions" : 0,
             "name" : args[0], 
             "color" : args[0]
         }).then((role) => {
@@ -442,7 +443,7 @@ client.on('message', (message) => {
         let reason = args.slice(0, 1).join(" ");
         message.guild.unban(userid, reason).then(() => {message.channel.send('Пользователь под id ' + userid + ' разбанен успешно');}).catch(() => {err('Этот пользователь не забанен')});
     }
-    if (['ьгеу', 'mute', 'мут'].includes(command) && message.member.roles.some(r=>[moder, owner].includes(r.id))) {
+    if (['ьгеу', 'mute', 'мут'].includes(command)) {
         let user = message.mentions.members.first(); 
         if (!message.member.hasPermission("KICK_MEMBERS")) return err(0, 'Кикать пользователей');
         if (!user) return message.channel.send(message.author + ', Ошибка. Причина: **Вы забыли упомянуть пользователя или вы хотите замутить того, кто не является пользователем**');
@@ -526,28 +527,30 @@ client.on('message', (message) => {
         let categories = [];
         let tempDesc = '';
         let cmd = 0;
+        let params = '`[...]` — Необязательный параметр\n`<...>` — Обязательный параметр\n\n';
         for (let i in commands) if (!categories.includes(commands[i].type)) categories.push(commands[i].category);
         const embed = new Discord.RichEmbed()
         .setColor('af00ff')
         .setTimestamp()
-        .setDescription('`[...]` — Необязательный параметр\n`<...>` — Обязательный параметр\n\n')
         for (let i in commands) if (category === commands[i].type) {
             cmd++;
             if (page === 1 && cmd <= 10) {
                 tempDesc += `**${prefix}${commands[i].name}**`;
-                for (let a in commands[i].args) tempDesc += ' `' + commands[i].args[a] + '`';
-                tempDesc += `\n${commands[i].desc}\n\n`;
-                embed.setDescription(tempDesc);
+                for (let a in commands[i].args) tempDesc += ' `' + commands[i].args[a] + '` ';
+                if (commands[i].perm) tempDesc += '(Требуется право: `' + commands[i].perm + '`)';
+                tempDesc += ` — ${commands[i].desc}\n\n`;
+                embed.setDescription(params + tempDesc);
                 continue;
             }
             if (cmd >= page * 10 - 9 && page > 1) {
                 tempDesc += `**${prefix}${commands[i].name}**`;
                 for (let a in commands[i].args) {
                     if (!commands[i].args) continue;
-                    tempDesc += ' `' + commands[i].args[a] + '`';
+                    tempDesc += ' `' + commands[i].args[a] + '` ';
                 }
-                tempDesc += `\n${commands[i].desc}\n\n`;
-                embed.setDescription(tempDesc);
+                if (commands[i].perm) tempDesc += '(Требется право: `' + commands[i].perm + '`)';
+                tempDesc += ` — ${commands[i].desc}\n\n`;
+                embed.setDescription(params + tempDesc);
             }
             embed.setFooter('Страница ' + page + '/' + Math.ceil(cmd / 10))
         }
