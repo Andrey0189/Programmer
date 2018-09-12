@@ -112,7 +112,6 @@ client.on('message', (message) => {
         message.guild.leave().catch();
         return;
     };
-    if (message.author.bot) return;
     if (message.channel.id === '489122598538444810') {
         message.delete();
         if (!message.content.match(hexreg)) return message.author.send('Вы указали неправильную структуру цвета');
@@ -126,6 +125,7 @@ client.on('message', (message) => {
             message.member.addRole(role);
             message.author.send('Ваш цвет - ' + message.content)});
     }
+    if (message.author.bot) return;
     let arr = [];
     message.guild.fetchInvites().then(invites => {
     invites.forEach(invite => {
@@ -352,7 +352,7 @@ client.on('message', (message) => {
         let user = message.mentions.members.first();
         if (!message.member.hasPermission("MANAGE_MESSAGES")) return err(0, 'Управление сообщениями');
         message.delete().catch(() => {return err('У меня недостаточно прав')});
-        user.send('**' + message.author.tag + ' (' + message.author + ') Отправил вам SMS следующего содержания:**\n' + args.join(" ").slice(0, 1)).catch(() => {return err('Не указано сообщение')});
+        user.send('**' + message.author.tag + ' (' + message.author + ') Отправил вам SMS следующего содержания:**\n' + args.join(" ")).catch(() => {return err('Не указано сообщение')});
     }
     if(['poll', 'vote'].includes(command)) {
         if (!poll[1]) return err('Нельзя создавать пустые голосования');
@@ -564,5 +564,4 @@ client.on('message', (message) => {
 });
 client.login(
     process.env.BOT_TOKEN
-    //''
 );
