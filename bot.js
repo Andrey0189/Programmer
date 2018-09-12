@@ -7,19 +7,20 @@
 *
 *Discord: ANDREY#8389
 *
-*Бот создан для сервера IT Team.
+*Бот создан для всех серверов Discord.
 *
-*Discord IT: https://discord.gg/XPqesHR
+*Discord IT Team сервер поддержки бота: https://discord.gg/XPqesHR
 *
 *Copyright 2018 © IT Team. Все права защищены.
 *
+*Пригласить бота: 
 **/
 const Discord = require("discord.js"); //Поделючение d.js
 const client = new Discord.Client(); //Клиент бота
 const fs = require("fs"); //Подключение fs
 const { inspect } = require("util"); //Подключение util
 const request = require("request"); //Подключение reqest
-const mysql = require("mysql"); //Подключение mysql
+const mongoose = require('mongoose'); //Подключение quick.db
 let commands = require('./Storage/commands.json'); //Подключение commands.json
 /** @namespace process.env.BOT_TOKEN */ //process.env
 module.exports = {
@@ -41,12 +42,12 @@ let epic = '468090270739595266'
 let muted = '469135765427847178'
 //Другие переменные и константы
 const bot_name = 'Программист';
-const version = 'v1.4.0'
+const version = 'v1.5.0'
 const update = 'Вышла новая версия ' + version + '. Обновления:\n\n1. Убраны команды для которых используется DataBase\n\n2. Изменена команда =help\n\n3. Добален модуль Fun';
-const rules = '1. Оскорбления других людей (Мут на 1 час). НО в случае уместного оскорбления, а не беспричинного человек не будет наказан. Также, вы не будете наказаны назвав кого то "Нуб" или подобными словами.\n\n2. Убийсто соклановца (Варн). НО если убийце получится доказать то что он сдделал это случайно, то он останется безнаказанным. в противном случае убийца получит варн. При наборе трех варнов он получает пожизненный бан.\n\n3. Рассылка порнографического контента без цензуры (Мут на 1 час). НО если на контенте присутствует цензура, то вы останетесь безнаказанным. При слишком частой рассылке с цензурой вы все также будете наказаны мутом на 1 час.\n\n4. Рассылка вредноносного ПО, т. е. вирусов, троянов и т. п. (Мут на 1 час). НО если ПО способно любыми способами удалить данные с жесткого диска (Шифрование, Блокирование, Полное удаление), то вы получите пожизненный бан.\n\n5. Реклама чего либо без разрешения администрации, или в непредназначенных для этого каналах. Для приглашений на другие сервера существует канал #invites. А для пиара других проектов зайдите в #photoshop-projects или #code-projects. Если администрация согласиться рекламировть ваш проект (Не сервер), то у вас появится право писать о его обновлених в #updates.\n\n6. Флуд или спам (Мут на 1 час). Для нашего сервера флуд - это сообщение(ия) в большинстве случаев занимающие большие объемы и не несущие никакого смысла, или содержащее очень малое количесво полезной информации. Спам - это большое количество повторяющихся символов, слов или фраз.\n\n7. Попрошайничество роли (Мут на 1 час). Попрошайничество роли - это когда человек пишет подобное сообщение: "Дайте мне роль ___". А например "Когда голосование за модератора?" в это не входит.'
-const rulesMore = '8. Написание большого количество /tts сообщений или одного большого бессмысленного сообщения. (Мут на 1 час). Если вы к многим своим сообщениям будете добавлять /tts, даже не смотря на то что они будут вполне адекватными вы все также получите наказание.\n\n9. Использовать @everyonе или @hеre более одного раза в день (Без наказания, это правило просто желательно выполнять)'
 const footer = bot_name + " | " + version + " | Все права защищены"
 const creator = '242975403512168449';
+const hexreg = /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/;
+const inviteReg = /https:\/\/discord(app\.com|\.gg|\.me|\.io)\/?(invite\/)?([_a-zA-Z0-9]{5,32})/gi
 //Функции
 //Функция для генерации случайного числа от min до max
 function randomInteger(min, max) {
@@ -72,8 +73,7 @@ function setBigTimeout(func, timeout) {
         setTimeout(func, timeout);
 }
 client.on('guildMemberAdd', (member) => {
-    member.addRole(people).catch(() => {console.log('Ошибка при выдаче роли')});
-    console.log('Роль выдана успешно');
+    if (!member.guild.id === '437290658458501143') return;
     const embed = new Discord.RichEmbed()
         .setTitle('Дороу')
         .setDescription('**Приветствую тебя ' + member + ', я - бот этого сервера. У меня есть магазин, экономика, миниигры, большое количесто команд. А на нашем сервере ты сможешь найти хороших друзей, редкие пинги, возможность поделиться своим творчеством, и посмотреть как его оценят другие люди. В скором времени у нас выйдет много обновлений. С уважением ' + bot_name + ' ' + version + '**')
@@ -88,11 +88,12 @@ client.on('guildMemberAdd', (member) => {
         .setDescription('На сервер **' + member.guild + '** пришел ' + member + '\n\nУчастников на этом сервере теперь **' + member.guild.memberCount + '**')
         .setFooter(footer)
         .setTimestamp()
-        client.fetchUser('242975403512168449').then (user => user.send({embed: embed2}).catch(() => {console.log('Ошибка при отправки сообщения о пополнении')}));
-        client.channels.get('467307902252613652').send(member + ' Прилетел на сервер. Нас стало **' + member.guild.memberCount + '**');
+        client.fetchUser(creator).then (user => user.send({embed: embed2}).catch(() => {console.log('Ошибка при отправки сообщения о пополнении')}));
+        client.channels.get('489119691504222257').send(member + ' Прилетел на сервер. Нас стало **' + member.guild.memberCount + '**');
 });
 //Событие ухода мембера с сервера
 client.on('guildMemberRemove', (member) => {
+    if (!member.guild.id === '437290658458501143') return;
     member.send('Прощай, ' + member + '. Мы будем скучать');
     const embed = new Discord.RichEmbed()
         .setTitle('Он ушел')
@@ -100,8 +101,8 @@ client.on('guildMemberRemove', (member) => {
         .setDescription(member + ' ушел :(.\n\nТеперь нас **' + member.guild.memberCount + '**')
         .setFooter(footer)
         .setTimestamp()
-        client.fetchUser('242975403512168449').then (user => user.send({embed}));
-        client.channels.get('467307902252613652').send(member + 'Покинул' + member.guild + ' Остались **' + member.guild.memberCount + '** пользователей');
+        client.fetchUser(creator).then (user => user.send({embed}));
+        client.channels.get('489119691504222257').send(member + 'Покинул' + member.guild + ' Остались **' + member.guild.memberCount + '** пользователей');
 });
 //То что должно произойти после запуска бота
 client.on('ready', () => {
@@ -110,7 +111,7 @@ client.on('ready', () => {
 });
 client.on('message', (message) => {
     if(message.channel.type !== 'text') return;
-    if(message.channel.id === '469504020323631115') return;
+    if(message.channel.id === '489114682737688577') return;
     if (!['437290658458501143', '457541720494571533', '469874212505649153'].includes(message.guild.id)) {
         message.channel.send('Андрей! Забери меня от сюда!');
         console.log('Андрюха, прикинь, меня крч на какой-то сервер пригласили, но я не растерялся и такой РАЗ. И свалил с этого сервера :D\nОвенр: ' + message.guild.owner.user.tag + '\nНазвание: ' + message.guild.name)
@@ -118,15 +119,27 @@ client.on('message', (message) => {
         return;
     };
     if (message.author.bot) return;
+    if (message.channel.id === '489122598538444810') {
+        message.delete();
+        if (!message.content.match(hexreg)) return message.author.send('Вы указали неправильную структуру цвета');
+        message.guild.createRole({
+            "name" : message.content, 
+            "color" : message.content
+        }).catch(() => {message.author.send('Произошла ошибка')})
+        .then((role) => {
+            message.member.addRole(people);
+            message.member.addRole(role);
+            message.author.send('Ваш цвет - ' + message.content)});
+    }
     let arr = [];
     message.guild.fetchInvites().then(invites => {
     invites.forEach(invite => {
         arr.push(invite.code); 
     })
-    let matches = message.content.match(/https:\/\/discord(app\.com|\.gg|\.me|\.io)\/?(invite\/)?([_a-zA-Z0-9]{5,32})/gi);
+    let matches = message.content.match(inviteReg);
     if (matches)
     matches.forEach((match) => {
-    if (!arr.includes(match.match(/https:\/\/discord(app\.com|\.gg|\.me|\.io)\/?(invite\/)?([_a-zA-Z0-9]{5,32})/i)[3])) {
+    if (!arr.includes(match.match(inviteReg)[3])) {
         const embed = new Discord.RichEmbed()
             .setTitle("Информация о предупреждениях")
             .setColor("af00ff")
@@ -207,6 +220,17 @@ client.on('message', (message) => {
                 }
             }
     }
+    if (command === 'change-color') {
+        if (!args[0]) return err('Вы не указали цвет'); 
+        if (!args[0].match(hexreg)) return err('Вы указали неправильную структуру цвета');
+        message.member.removeRole(message.member.roles.find(role => role.name.match(hexreg))).catch();
+        message.guild.createRole({
+            "name" : args[0], 
+            "color" : args[0]
+        }).then((role) => {
+            message.member.addRole(role);
+            message.channel.send('Ваш цвет изменен на ' + args[0])});
+    }
     if(command === 'update') {
         message.delete();
         const embed = new Discord.RichEmbed()
@@ -244,17 +268,90 @@ client.on('message', (message) => {
     }
     if (command === 'say') {
         if (!message.member.hasPermission("MANAGE_MESSAGES")) return err(0, 'Управление сообщениями');
-        message.channel.send(args.join(" ")).catch(() => {return err('Не указано сообщение').then(() => {message.delete().catch(() => {return err('У меня недостаточно прав')});})});
+        message.delete().catch(() => {return err('У меня недостаточно прав')});
+        message.channel.send(args.join(" ")).catch(() => {return err('Не указано сообщение')});
+    }
+    if (command === 'rule1') {
+        if (!message.member.hasPermission("MANAGE_MESSAGES")) return err(0, 'Управление сообщениями');
+        message.delete().catch(() => {return err('У меня недостаточно прав')});
+        const embed = new Discord.RichEmbed()
+        .setTitle('Пункт 1')
+        .setColor('af00ff')
+        .setDescription('Оскорбления других людей (Мут на 1 час). НО в случае уместного оскорбления, а не беспричинного человек не будет наказан. Также, вы не будете наказаны назвав кого то "Нуб" или подобными словами.')
+        .setThumbnail('https://media.discordapp.net/attachments/489107664479977472/489149961913499678/number1_PNG14894.png?width=300&height=300');
+        message.channel.send({embed}).catch(() => {return err('Не указано сообщение')});
+    }
+    if (command === 'rule2') {
+        if (!message.member.hasPermission("MANAGE_MESSAGES")) return err(0, 'Управление сообщениями');
+        message.delete().catch(() => {return err('У меня недостаточно прав')});
+        const embed = new Discord.RichEmbed()
+        .setTitle('Пункт 2')
+        .setColor('af00ff')
+        .setDescription('Рассылка порнографического контента без цензуры (Мут на 1 час). НО если на контенте присутствует цензура, то вы останетесь безнаказанным. При слишком частой рассылке с цензурой вы все также будете наказаны мутом на 1 час.')
+        .setThumbnail('https://media.discordapp.net/attachments/489107664479977472/489150518648897536/Westconf2.png?width=300&height=300');
+        message.channel.send({embed}).catch(() => {return err('Не указано сообщение')});
+    }
+    if (command === 'rule3') {
+        if (!message.member.hasPermission("MANAGE_MESSAGES")) return err(0, 'Управление сообщениями');
+        message.delete().catch(() => {return err('У меня недостаточно прав')});
+        const embed = new Discord.RichEmbed()
+        .setTitle('Пункт 3')
+        .setColor('af00ff')
+        .setDescription('Рассылка вредноносного ПО, т. е. вирусов, троянов и т. п. (Мут на 1 час). НО если ПО способно любыми способами удалить данные с жесткого диска (Шифрование, Блокирование, Полное удаление), то вы получите пожизненный бан.')
+        .setThumbnail('https://media.discordapp.net/attachments/489107664479977472/489151595372871700/Westconf3.png?width=300&height=300');
+        message.channel.send({embed}).catch(() => {return err('Не указано сообщение')});
+    }
+    if (command === 'rule4') {
+        if (!message.member.hasPermission("MANAGE_MESSAGES")) return err(0, 'Управление сообщениями');
+        message.delete().catch(() => {return err('У меня недостаточно прав')});
+        const embed = new Discord.RichEmbed()
+        .setTitle('Пункт 4')
+        .setColor('af00ff')
+        .setDescription('Реклама чего либо без разрешения администрации, или в непредназначенных для этого каналах. Для приглашений на другие сервера существует канал #invites. А для пиара других проектов зайдите в #photoshop-projects или #code-projects. Если администрация согласиться рекламировть ваш проект (Не сервер), то у вас появится право писать о его обновлених в #updates.')
+        .setThumbnail('https://media.discordapp.net/attachments/489107664479977472/489153751190470666/Westconf4.png?width=300&height=300');
+        message.channel.send({embed}).catch(() => {return err('Не указано сообщение')});
+    }
+    if (command === 'rule5') {
+        if (!message.member.hasPermission("MANAGE_MESSAGES")) return err(0, 'Управление сообщениями');
+        message.delete().catch(() => {return err('У меня недостаточно прав')});
+        const embed = new Discord.RichEmbed()
+        .setTitle('Пункт 5')
+        .setColor('af00ff')
+        .setDescription('Флуд или спам (Мут на 1 час). Для нашего сервера флуд - это сообщение(ия) в большинстве случаев занимающие большие объемы и не несущие никакого смысла, или содержащее очень малое количесво полезной информации. Спам - это большое количество повторяющихся символов, слов или фраз.')
+        .setThumbnail('https://media.discordapp.net/attachments/489107664479977472/489155201069088778/Westconf5.png?width=300&height=300');
+        message.channel.send({embed}).catch(() => {return err('Не указано сообщение')});
+    }
+    if (command === 'rule6') {
+        if (!message.member.hasPermission("MANAGE_MESSAGES")) return err(0, 'Управление сообщениями');
+        message.delete().catch(() => {return err('У меня недостаточно прав')});
+        const embed = new Discord.RichEmbed()
+        .setTitle('Пункт 6')
+        .setColor('af00ff')
+        .setDescription('Попрошайничество роли (Мут на 1 час). Попрошайничество роли - это когда человек пишет подобное сообщение: "Дайте мне роль ___". А например "Когда голосование за модератора?" в это не входит.')
+        .setThumbnail('https://media.discordapp.net/attachments/489107664479977472/489156483607691264/Westconf6.png?width=300&height=300');
+        message.channel.send({embed}).catch(() => {return err('Не указано сообщение')});
+    }
+    if (command === 'rule7') {
+        if (!message.member.hasPermission("MANAGE_MESSAGES")) return err(0, 'Управление сообщениями');
+        message.delete().catch(() => {return err('У меня недостаточно прав')});
+        const embed = new Discord.RichEmbed()
+        .setTitle('Пункт 7')
+        .setColor('af00ff')
+        .setDescription('Написание большого количество /tts сообщений или одного большого бессмысленного сообщения. (Мут на 1 час). Если вы к многим своим сообщениям будете добавлять /tts, даже не смотря на то что они будут вполне адекватными вы все также получите наказание.')
+        .setThumbnail('https://media.discordapp.net/attachments/489107664479977472/489157561656803389/Westconf7.png?width=300&height=300');
+        message.channel.send({embed}).catch(() => {return err('Не указано сообщение')});
     }
     if (command === 'send') {
         let user = message.mentions.members.first();
         if (!message.member.hasPermission("MANAGE_MESSAGES")) return err(0, 'Управление сообщениями');
-        user.send(args.join(" ").slice(0, 1)).catch(() => {return err('Не указано сообщение').then(() => {message.delete().catch(() => {return err('У меня недостаточно прав')});})});
+        message.delete().catch(() => {return err('У меня недостаточно прав')});
+        user.send(args.join(" ").catch(() => {return err('Не указано сообщение')}));
     }
     if (command === 'sms') {
         let user = message.mentions.members.first();
         if (!message.member.hasPermission("MANAGE_MESSAGES")) return err(0, 'Управление сообщениями');
-        user.send('**' + message.author.tag + ' (' + message.author + ') Отправил вам SMS следующего содержания:**\n' + args.join(" ").slice(0, 1)).catch(() => {return err('Не указано сообщение').then(() => {message.delete().catch(() => {return err('У меня недостаточно прав')});})});
+        message.delete().catch(() => {return err('У меня недостаточно прав')});
+        user.send('**' + message.author.tag + ' (' + message.author + ') Отправил вам SMS следующего содержания:**\n' + args.join(" ").slice(0, 1)).catch(() => {return err('Не указано сообщение')});
     }
     if(['poll', 'vote'].includes(command)) {
         if (!poll[1]) return err('Нельзя создавать пустые голосования');
@@ -272,7 +369,7 @@ client.on('message', (message) => {
         message.channel.send({embed}).catch(() => {return err('Лимит в 2000 символов превышен')}).then(msg => {for (let i = 1;i < poll.length;i++) msg.react(module.exports[i]); message.delete();});
     };
     if (command === 'eval') {
-        if (message.author.id !== '242975403512168449') return message.channel.send('Эй, мамкин хакер, эвал только для элиты!');
+        if (message.author.id !== creator) return message.channel.send('Эй, мамкин хакер, эвал только для элиты!');
         const code = args.join(" ").replace(/client\.token|client\[.token.\]/ig, 'process.env.TOKEN');        
         const token = client.token.split("").join("[^]{0,2}");
         const rev = client.token.split("").reverse().join("[^]{0,2}");
@@ -416,23 +513,22 @@ client.on('message', (message) => {
     if (['help', 'рудз', 'хелп', 'помощь'].includes(command)) {
         if (isNaN(parseInt(args[1]))) args[1] = 1
         const page = parseInt(args[1]);
-        if (!args[0] || !['m', 's', 'f'].includes(args[0].toLowerCase())) {
+        if (!args[0] || !['m', 's', 'f', 'standart', 'moderation', 'fun', 'mod', 'stand'].includes(args[0].toLowerCase())) {
             const embed = new Discord.RichEmbed()
                 .setTitle('Помощь')
                 .setColor('af00ff')
-                .setDescription('Вы не указали модуль. Существющие модули:\n\n***1. - s\n2. - m\n3. - f***')
+                .setDescription('Вы не указали модуль. Существющие модули:\n\n***1. - standart\n2. - moderation\n3. - fun***\n\nПримеры: ' + prefix + 'help m, ' + prefix + 'help s 2')
                 .setFooter(footer)
                 .setTimestamp();
             return message.channel.send({embed});
         }
-        let category = args[0];
+        let category = args[0][0].toLowerCase();
         let categories = [];
         let tempDesc = '';
         let cmd = 0;
         for (let i in commands) if (!categories.includes(commands[i].type)) categories.push(commands[i].category);
         const embed = new Discord.RichEmbed()
         .setColor('af00ff')
-        .setFooter('Страница ' + page + '/' + Math.ceil(Object.keys(command).length / 10))
         .setTimestamp()
         .setDescription('`[...]` — Необязательный параметр\n`<...>` — Обязательный параметр\n\n')
         for (let i in commands) if (category === commands[i].type) {
@@ -444,7 +540,7 @@ client.on('message', (message) => {
                 embed.setDescription(tempDesc);
                 continue;
             }
-            if (cmd >= page * 10 - 9 && cmd > 1) {
+            if (cmd >= page * 10 - 9 && page > 1) {
                 tempDesc += `**${prefix}${commands[i].name}**`;
                 for (let a in commands[i].args) {
                     if (!commands[i].args) continue;
@@ -453,11 +549,12 @@ client.on('message', (message) => {
                 tempDesc += `\n${commands[i].desc}\n\n`;
                 embed.setDescription(tempDesc);
             }
+            embed.setFooter('Страница ' + page + '/' + Math.ceil(cmd / 10))
         }
         if (cmd < page * 10 - 10 && page > 1 || page <= 0) return err('Такой страницы не существует');
         if (category === 'm') category = 'модерация';
         if (category === 's') category = 'стандартные';
-        if (category === 'f') category = 'Развлечения';
+        if (category === 'f') category = 'развлечения';
         embed.setTitle('Команды модуля ' + category + '') ;
         message.channel.send({embed});
     }
