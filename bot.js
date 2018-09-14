@@ -244,8 +244,8 @@ client.on('message', (message) => {
     }
     if (command === 'guilds' && message.author.id === creator) message.reply(client.guilds.size);
     if (['8ball', 'ball', '8'].includes(command)) {
-        const answers = ['Без сомннения!', 'Да, конечно', 'Да', 'Вроде да', 'Возможно', 'Абсолютно нет!', 'Никак нет', 'Нет', 'Неа', 'Cомневаюсь', 'Спроси позднее, я не знаю']
-        const numOfAnswer = randomInteger(0, 10);
+        const answers = ['Без сомннения!', 'Да, конечно', 'Да', 'Вроде да', 'Возможно', 'Абсолютно нет!', 'Никак нет', 'Нет', 'Неа', 'Cомневаюсь']
+        const numOfAnswer = randomInteger(0, 9);
         if (!args[0]) return message.reply('Ошибка. Причина: **Не указан аргумент**\n\nПравильное использование:\n=8ball `<вопрос>`')
         message.reply(answers[numOfAnswer]);
     };
