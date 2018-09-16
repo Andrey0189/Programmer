@@ -106,7 +106,7 @@ client.on('ready', () => {
 client.on('message', (message) => {
     if(message.channel.type !== 'text') return;
     if(message.channel.id === '489114682737688577') return;
-    if (!['437290658458501143', '457541720494571533', '469874212505649153'].includes(message.guild.id)) {
+    if (!['437290658458501143', '457541720494571533', '469874212505649153', '490450518150217730'].includes(message.guild.id)) {
         message.channel.send('Андрей! Забери меня от сюда!');
         console.log('Андрюха, прикинь, меня крч на какой-то сервер пригласили, но я не растерялся и такой РАЗ. И свалил с этого сервера :D\nОвенр: ' + message.guild.owner.user.tag + '\nНазвание: ' + message.guild.name)
         message.guild.leave().catch();
