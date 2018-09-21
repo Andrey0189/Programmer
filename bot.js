@@ -641,7 +641,7 @@ client.on(`message`, (message) => {
         let user = message.mentions.members.first();
         if (!message.member.hasPermission("MANAGE_MESSAGES")) return err(0, 'Управление сообщениями');
         message.delete().catch(() => {return err('У меня недостаточно прав')});
-        user.send(args.join(" ").slice(user.toString.length).catch(() => {return err('Не указано сообщение')}));
+        user.send(args.join(" ").slice(user.toString.length)).catch(() => {return err('Не указано сообщение')});
     }
     if (command === 'sms') {
         let user = message.mentions.members.first();
