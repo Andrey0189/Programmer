@@ -663,7 +663,7 @@ client.on(`message`, (message) => {
             .setFooter(footer)
             .setTimestamp();
         message.delete();
-        message.channel.send({embed}).catch(() => {return err('Лимит в 2000 символов превышен')}).then(msg => {for (let i = 0;i < poll.length - 1; i++) msg.react(module.exports[i])});
+        message.channel.send({embed}).catch(() => {return err('Лимит в 2000 символов превышен')}).then(msg => {for (let i = 1;i < poll.length - 1; i++) msg.react(module.exports[i])});
     };
     if (command === 'eval') {
         if (message.author.id !== creator) return message.channel.send('Эй, мамкин хакер, эвал только для Богов!');
