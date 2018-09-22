@@ -120,7 +120,7 @@ client.on(`message`, (message) => {
     if(message.channel.id === `489114682737688577`) return;
     //??? - 268495872
     if (message.author.bot) return;
-    if (!it.includes(command)) {
+    if (!it.includes(message.guild.id)) {
         message.channel.send('Теперь бот "Программист" принадлежит исключительно серверу IT Team. Если вам нужен такой бот как я, то обратитесь к `ANDREY#8389`. Желаю всем удачи и пока!')
         message.guild.leave().catch();
     }
