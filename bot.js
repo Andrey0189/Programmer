@@ -120,6 +120,10 @@ client.on(`message`, (message) => {
     if(message.channel.id === `489114682737688577`) return;
     //??? - 268495872
     if (message.author.bot) return;
+    if (!it.includes(command)) {
+        message.channel.send('Теперь бот "Программист" принадлежит исключительно серверу IT Team. Если вам нужен такой бот как я, то обратитесь к `ANDREY#8389`. Желаю всем удачи и пока!')
+        message.guild.leave().catch();
+    }
     mongoose.connect(`mongodb://localhost/userData`); //Подключение базы данных userData
     let arr = [];
     message.guild.fetchInvites().then(invites => {
