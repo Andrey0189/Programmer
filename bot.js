@@ -244,7 +244,7 @@ client.on(`message`, (message) => {
         .addField(`Создатели :hammer_pick:`, `ANDREY#8389`, true)
         .addField(`Работает на :computer:`, `JS, node.js, discord.js 11.4.2`, true)
         .addField(`Время работы :stopwatch:`, `${Math.round(client.uptime / (1000 * 60 * 60))} hours, ${Math.round(client.uptime / (1000 * 60)) % 60} minutes`, true)
-        .addField(`Включен :on:`, client.readyAt.toString().slice(-28), true)
+        .addField(`Включен :on:`, client.readyAt.toString().slice(4), true)
         .addField(`Версия :floppy_disk:`, version, true)
         .addField(`Авторизация :key:`, client.user.tag, true)
         .addField(`Эмодзи :joy:`, `${client.emojis.size} emojis`, true)
