@@ -1,19 +1,15 @@
 /*
 *Внимание!
-*Вы можете брать код только с разрешения автора бота.
-*Нарушения авторских прав карается законом.
+*Представленный ниже код свободен для использования (open-source)
 *
-*Связатся с автором можно через Discord
+*Если вы хотите связатся с автором, то вы можете это сделать можно через Discord
 *
 *Discord: ANDREY#8389
 *
 *Бот создан для IT Team.
 *
-*Discord IT Team сервер поддержки бота: https://discord.gg/XPqesHR
+*Discord IT Team сервер поддержки бота: https://discord.gg/yPpvbPp
 *
-*Copyright 2018 © IT Team. Все права защищены.
-*
-*Пригласить бота: 
 **/
 const Discord = require(`discord.js`); //Поделючение d.js
 const client = new Discord.Client(); //Клиент бота
