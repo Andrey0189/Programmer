@@ -536,7 +536,7 @@ client.on(`message`, (message) => {
             .setTimestamp();
         message.channel.send({embed});
     }
-    if (command === 'blob') message.channel.send(`\${client.emojis.get('494808660808302592')}`).then(() => message.delete());
+    if (command === 'blob') message.channel.send(`\\${client.emojis.get('494808660808302592')}`).then(() => message.delete());
     if (command === 'guilds' && message.author.id === creator) message.reply(client.guilds.size);
     if (['8ball', 'ball', '8'].includes(command)) {
         const answers = ['Без сомннения!', 'Да, конечно', 'Да', 'Вроде да', 'Возможно', 'Абсолютно нет!', 'Никак нет', 'Нет', 'Неа', 'Cомневаюсь', 'Спроси позднее, я не знаю']
