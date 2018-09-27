@@ -358,7 +358,7 @@ client.on(`message`, (message) => {
             role = message.guild.roles.find('name', args[0])
         }
         let perms = [];
-        if (role.hasPermission("ADMINISTRATOR")) perms.push('Администратор');
+        if (role.hasPermission("ADMINISTRATOR")) perms.push('Администратор :exclamination:');
         else {
             if (role.hasPermission("VIEW_AUDIT_LOG")) perms.push('Просмотр журнала аудита :eye:');
             if (role.hasPermission("MANAGE_GUILD")) perms.push('Управление сервером :level_slider:');
@@ -398,7 +398,6 @@ client.on(`message`, (message) => {
             .addField(`Создана :gear:`, role.createdAt.toString().slice(4, -15), true)
             .addField(`Отображается? :desktop:`, (role.hoist?'Да':'Нет'), true)
             .addField(`Упоминаемая? :bulb:`, (role.mentionable?'Да':'Нет'), true)
-            .addField(`Права`, ':video_game:' , true)
             .setDescription(`**${perms.join('**\n**')}**`)
             message.channel.send({embed})
     }
@@ -537,7 +536,7 @@ client.on(`message`, (message) => {
             .setTimestamp();
         message.channel.send({embed});
     }
-    if (command === 'blob') message.channel.send(client.emojis.get('494808660808302592')).then(() => message.delete());
+    if (command === 'blob') message.channel.send(`${client.emojis.get('494808660808302592')} ы`).then(() => message.delete());
     if (command === 'guilds' && message.author.id === creator) message.reply(client.guilds.size);
     if (['8ball', 'ball', '8'].includes(command)) {
         const answers = ['Без сомннения!', 'Да, конечно', 'Да', 'Вроде да', 'Возможно', 'Абсолютно нет!', 'Никак нет', 'Нет', 'Неа', 'Cомневаюсь', 'Спроси позднее, я не знаю']
