@@ -120,7 +120,6 @@ client.on(`message`, (message) => {
         message.channel.send('Теперь бот "Программист" принадлежит исключительно серверу IT Team. Если вам нужен такой бот как я, то обратитесь к `ANDREY#8389`. Желаю всем удачи и пока!')
         message.guild.leave().catch();
     }
-    mongoose.connect(`mongodb://localhost/userData`); //Подключение базы данных userData
     let arr = [];
     message.guild.fetchInvites().then(invites => {
     invites.forEach(invite => {
@@ -663,7 +662,7 @@ client.on(`message`, (message) => {
             .setFooter(footer)
             .setTimestamp();
         message.delete();
-        message.channel.send({embed}).catch(() => {return err('Лимит в 2000 символов превышен')}).then(msg => {for (let i = 1;i < poll.length - 1; i++) msg.react(module.exports[i])});
+        message.channel.send({embed}).catch(() => {return err('Лимит в 2000 символов превышен')}).then(msg => {for (let i = 1;i < poll.length; i++) msg.react(module.exports[i])});
     };
     if (command === 'eval') {
         if (message.author.id !== creator) return message.channel.send('Эй, мамкин хакер, эвал только для Богов!');
