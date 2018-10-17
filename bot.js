@@ -241,8 +241,8 @@ client.on(`message`, (message) => {
             ':flag_eg:', ':flag_in:', ':flag_au:', ':flag_nz:', ':flag_sg:', ':flag_my:', ':flag_pk:',
             ':flag_uz:', ':flag_cn:', ':flag_ua:', ':flag_de:', ':flag_fr:', ':flag_jp:', ':flag_br:',
         ];
-        const countryDefinder = func.random(0, countries.length - 1);
-        const numberInList = func.random(1, 6);
+        const countryDefinder = randomInteger(0, countries.length - 1);
+        const numberInList = randomInteger(1, 6);
         const flagsInMenu = [];
         const embed = new Discord.RichEmbed()
         .setTitle('Миниигра "Угадай флаг страны"')
@@ -251,10 +251,10 @@ client.on(`message`, (message) => {
         .setFooter('Напишите цифру внизу (У вас есть 10 секунд!)')
         .setTimestamp();
         for (let i = 1; i < 7; i++) {
-            let flag = flags[func.random(0, flags.length - 1)];
+            let flag = flags[randomInteger(0, flags.length - 1)];
             if (i === numberInList) flag = flags[countryDefinder];
             flagsInMenu.forEach(flagInMenu => {
-                while (flag === flagInMenu) flag = flags[func.random(0, flags.length - 1)];
+                while (flag === flagInMenu) flag = flags[randomInteger(0, flags.length - 1)];
             })
             flagsInMenu.push(flag);
             embed.addField(`${i})`, flag, true);
