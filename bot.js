@@ -228,6 +228,49 @@ client.on(`message`, (message) => {
     //premium - 104193088
     //watcher - 104193216 
     //epic - 104332736
+    if (['country', 'страна'].includes(command)) {
+        const countries =  ['Зимбабве', 'Хорватия', 'Латвия', 'Казахстан', 'Россия', 'Греция',
+            'Дания', `Уганда`, 'Финляндия', 'Беларусь', 'Румыния', 'Албания', 'Швейцария', 
+            'Монако', 'Польша', 'Италия', 'Америка', 'Великобритания', 'Португалия', 'Турция',
+            'Египет', 'Индия', 'Австралия', 'Новая Зеландия', 'Сингапур', 'Малайзия', 'Пакистан',
+            'Узбекистан', 'Китай', 'Украина', 'Германия', 'Франция', 'Япония', 'Бразилия',
+        ];
+        const flags = [':flag_zw:', ':flag_hr:', ':flag_lv:', ':flag_kz:', ':flag_ru:', ':flag_gr:',
+            ':flag_dk:', ':flag_ug:', ':flag_fi:', ':flag_by:', ':flag_ro:', ':flag_al:', ':flag_ch:', 
+            ':flag_mc:', ':flag_pl:', ':flag_it:', ':flag_us:', ':flag_gb:', ':flag_pt:', ':flag_tr:',
+            ':flag_eg:', ':flag_in:', ':flag_au:', ':flag_nz:', ':flag_sg:', ':flag_my:', ':flag_pk:',
+            ':flag_uz:', ':flag_cn:', ':flag_ua:', ':flag_de:', ':flag_fr:', ':flag_jp:', ':flag_br:',
+        ];
+        const countryDefinder = func.random(0, countries.length - 1);
+        const numberInList = func.random(1, 6);
+        const flagsInMenu = [];
+        const embed = new Discord.RichEmbed()
+        .setTitle('Миниигра "Угадай флаг страны"')
+        .setDescription(`${message.member}, Какой флаг у страны **"${countries[countryDefinder]}"**?`)
+        .setColor('af00ff')
+        .setFooter('Напишите цифру внизу (У вас есть 10 секунд!)')
+        .setTimestamp();
+        for (let i = 1; i < 7; i++) {
+            let flag = flags[func.random(0, flags.length - 1)];
+            if (i === numberInList) flag = flags[countryDefinder];
+            flagsInMenu.forEach(flagInMenu => {
+                while (flag === flagInMenu) flag = flags[func.random(0, flags.length - 1)];
+            })
+            flagsInMenu.push(flag);
+            embed.addField(`${i})`, flag, true);
+        }
+        message.channel.send({embed}).then(() => {
+            const collector10sec = new Discord.MessageCollector(message.channel, m => m.author.id === message.author.id, { time: 10000 });
+            collector10sec.on('collect', msg => {
+                collector10sec.stop();
+                if (msg.content || !isNaN(parseInt(msg.content))) {
+                    const number = parseInt(msg.content) - 1;
+                    if (flagsInMenu[number] === flags[countryDefinder]) msg.reply(`Ты выиграл! :)`);
+                    else msg.reply(`Ты проиграл ${client.emojis.get(emojis.yoba)}`);
+                } else msg.reply(`Ты проиграл ${client.emojis.get(emojis.yoba)}`);
+            });
+        });
+    }
     if (command === 'test') {
         const embed = new Discord.RichEmbed()
         .setTitle(`Бот "${bot_name}"`)
