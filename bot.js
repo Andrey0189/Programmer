@@ -6,10 +6,6 @@
 *
 *Discord: ANDREY#8389
 *
-*Бот создан для IT Team.
-*
-*Discord IT Team сервер поддержки бота: https://discord.gg/yPpvbPp
-*
 **/
 const Discord = require(`discord.js`); //Поделючение d.js
 const client = new Discord.Client(); //Клиент бота
